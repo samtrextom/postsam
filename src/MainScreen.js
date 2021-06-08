@@ -209,6 +209,16 @@ const MainScreen = () => {
           {isPostLoading && <div>...Loading <CircularProgress color="inherit"/></div>}
         </div>
       </div>
+      <div style={{
+        fontSize: 12,
+        textAlign: 'center',
+        position: 'absolute',
+        bottom: 0,
+        left:'50%',
+        marginLeft:-50
+      }}>
+        PostSam ver 0.1.1
+      </div>
     </div>
   )
 }
