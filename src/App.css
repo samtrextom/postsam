@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+.dragon{
+  animation-duration: 300s;
+  animation-name: fade;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes fade{
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: .025;
+  }
+}
+

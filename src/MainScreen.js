@@ -4,19 +4,12 @@ import axios from 'axios';
 import { convertToJSON } from './JSONconvertor';
 import JSONInput from "react-json-editor-ajrm";
 import locale from "react-json-editor-ajrm/locale/en";
-/**Material UI imports */
-import Snackbar from '@material-ui/core/Snackbar'; //DOCS: https://material-ui.com/components/snackbars/
-import MuiAlert from '@material-ui/lab/Alert';     //DOCS: https://material-ui.com/components/alert/
 
 const useStyles = makeStyles(({
   textInput:{
     width:500
   }
 }))
-
-const get = (url) =>{
-
-}
 
 const MainScreen = () => {
 
@@ -66,6 +59,10 @@ const MainScreen = () => {
     setAfter(JSON.parse(e.json))
   }
 
+  const handleCopy = () =>{
+    setGetURL('https://tsdev.serigraph.com/scripts/data/dal')
+  }
+
   const clearGet = () =>{
     setGetError(false)
     setGetURL('')
@@ -87,7 +84,6 @@ const MainScreen = () => {
     axios.get(getURL)
     .then((resp)=>{
       var data = resp.data
-      console.log(data.meta[0].err)
       if(data.meta[0].err){
         setGetError(true)
         setGetErrorMessage(data.meta[0].errmsg)
@@ -140,6 +136,13 @@ const MainScreen = () => {
 
   return (
     <div className="App">
+      <img src="/dragon.png" className="dragon" style={{
+        position:"absolute", 
+        top:0, 
+        opacity:.15, 
+        width:700, 
+        left:'50%',
+        marginLeft:-350}}/>
       <h1><i className="fas fa-fire-alt"></i>PostSam<i className="fas fa-fire-alt"></i></h1>
       <div style={{display:'flex', marginLeft:'39vw', marginRight:'39vw', color:'red', borderBottom:'1px solid black'}}>
         <i className="fas fa-fire-alt"></i>
@@ -173,11 +176,11 @@ const MainScreen = () => {
         <i className="fas fa-fire-alt"></i>
         <i className="fas fa-fire-alt"></i>
       </div>
-      <div>https://tsdev.serigraph.com/scripts/data/dal</div>
+      <div>https://tsdev.serigraph.com/scripts/data/dal<Button onClick={handleCopy}><i class="far fa-copy"></i></Button></div>
       <div style={{display:'flex', padding:24}}>
         <div style={{flex:1, display:'block', textAlign:'center'}}>
-          <h2>Status:{getError?<span style={{color:'red'}}>Error</span>:getError===null?'':<span style={{color:'green'}}>Success</span>}</h2>
-          <div style={{height:50}}>{<pre>{JSON.stringify(getErrorMessage, null, 4)}</pre>}</div>
+          <h2>Status: {getError?<span style={{color:'red'}}>Error</span>:getError===null?'':<span style={{color:'green'}}>Success</span>}</h2>
+          <div style={{height:50}}>{getErrorMessage && <pre>{getErrorMessage.replaceAll('\\n', '\n')}</pre>}</div>
           <div style={{flex:1}}>
             <TextField className={classes.textInput} value={getURL} onChange={handleGetURL} label={"Get URL"}/>
             <Button onClick={fireGet} variant={"contained"} color={"secondary"}><i className="fas fa-fire-alt"></i></Button>
@@ -191,8 +194,8 @@ const MainScreen = () => {
           {isGetLoading && <div>...Loading <CircularProgress color="inherit"/></div>}
         </div>
         <div style={{flex:1, display:'block', textAlign:'center'}}>
-        <h2>Status:{postError?<span style={{color:'red'}}>Error</span>:postError===null?'':<span style={{color:'green'}}>Success</span>}</h2>
-        <div style={{height:50}}>{<pre>{JSON.stringify(postErrorMessage, null, 4)}</pre>}</div>
+        <h2>Status: {postError?<span style={{color:'red'}}>Error</span>:postError===null?'':<span style={{color:'green'}}>Success</span>}</h2>
+        <div style={{height:50}}>{postErrorMessage && <pre>{postErrorMessage.replaceAll('\\n', '\n')}</pre>}</div>
           <div style={{flex:1}}>
             <TextField className={classes.textInput} value={postURL} onChange={handlePostURL} label={"Post URL"}/>
             <Button onClick={firePost} variant={"contained"} color={"secondary"}><i className="fas fa-fire-alt"></i></Button>
